@@ -73,7 +73,6 @@ func main() {
 		defer agentFd.Close()
 
 		agentSigner := agent.NewClient(agentFd)
-
 		sshConfig = &ssh.ClientConfig{
 			User: *sshUser,
 			Auth: []ssh.AuthMethod{
@@ -82,6 +81,8 @@ func main() {
 			HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 		}
 	}
+
+	sshConfig.HostKeyAlgorithms = []string{"ssh-ed25519", "rsa-sha2-256"}
 
 	client, err := ssh.Dial("tcp", *sshIP, sshConfig)
 	if err != nil {
